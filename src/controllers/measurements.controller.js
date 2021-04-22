@@ -40,6 +40,23 @@ ctrl.getMeasurementById = async (req, res) => {
     }
 };
 
+ctrl.getMeasurementsByZone = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const measurements = await Measurement.findAll({
+            where: {
+                zoneId: id
+            }
+        });
+        res.status(200).json(measurements);
+    } catch (error) {
+        res.status(500).json({
+            message:
+                error.message || `Error retrieving Measurement with id=${id}`
+        });
+    }
+};
+
 ctrl.updateMeasurementById = async (req, res) => {
     try {
         const { id } = req.params;

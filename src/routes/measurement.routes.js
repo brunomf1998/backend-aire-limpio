@@ -6,6 +6,7 @@ const router = Router();
 router.post('/', measurementsController.createMeasurement);
 router.get('/', measurementsController.getMeasurements);
 router.get('/:id', measurementsController.getMeasurementById);
+router.get('/zone/:id', measurementsController.getMeasurementsByZone);
 router.put('/:id', measurementsController.updateMeasurementById);
 router.delete('/:id', measurementsController.deleteMeasurementById);
 
