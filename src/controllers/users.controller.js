@@ -3,8 +3,6 @@ const { User } = require('../models');
 
 const ctrl = {};
 
-
-
 ctrl.createUser = async (req, res) => {
     try {
         const { id, firstName, lastName, password, email, districtId } = req.body;

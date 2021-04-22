@@ -1,4 +1,4 @@
-const { Measurement } = require('../models');
+const { Measurement, Variable, Zone } = require('../models');
 
 const ctrl = {};
 
@@ -47,11 +47,26 @@ ctrl.getMeasurementById = async (req, res) => {
 ctrl.getMeasurementsByZone = async (req, res) => {
     try {
         const { id } = req.params;
-        const measurements = await Measurement.findAll({
+        /* const measurements = await Measurement.findAll({
             where: {
                 zoneId: id
             },
             attributes: ['id', 'zoneId', 'variableId', 'ecaValue']
+        }); */
+
+        const measurements = await Measurement.findAll({
+            where: {
+                zoneId: id
+            },
+            attributes: ['id', 'ecaValue'],
+            include: [
+                {
+                  model: Variable,
+                },
+                {
+                    model: Zone,
+                }
+              ]
         });
         res.status(200).json(measurements);
     } catch (error) {
