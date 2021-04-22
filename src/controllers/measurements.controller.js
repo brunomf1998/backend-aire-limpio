@@ -61,14 +61,25 @@ ctrl.getMeasurementsByZone = async (req, res) => {
             attributes: ['id', 'ecaValue'],
             include: [
                 {
-                  model: Variable,
+                    model: Variable,
                 },
                 {
                     model: Zone,
                 }
               ]
         });
-        res.status(200).json(measurements);
+        let measurementsModified = []
+        measurements.forEach(element => {
+            const aux = {
+                id: element.id,
+                ecaValue: element.ecaValue,
+                nombreZona: element.zone.name,
+                nombreVariable: element.variable.name
+            }
+            measurementsModified.push(aux);
+        });
+
+        res.status(200).json(measurementsModified);
     } catch (error) {
         res.status(500).json({
             message:
