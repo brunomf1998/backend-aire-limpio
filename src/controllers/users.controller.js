@@ -3,15 +3,11 @@ const { User } = require('../models');
 
 const ctrl = {};
 
-const encryptPassword = async (password) => {
-    const salt = await bcrypt.genSalt(10);
-    return await bcrypt.hash(password, salt);
-};
+
 
 ctrl.createUser = async (req, res) => {
     try {
         const { id, firstName, lastName, password, email, districtId } = req.body;
-        const encryptedPassword = await encryptPassword(password);
         const userSaved = await User.create({ id, firstName, lastName, password: encryptedPassword, email, districtId });
         res.status(201).json(userSaved);
     } catch (error) {
@@ -65,10 +61,6 @@ ctrl.getUserByEmail = async (req, res) => {
 ctrl.updateUserById = async (req, res) => {
     try {
         const { id } = req.params;
-        if (req.body.password) {
-            const encryptedPassword = await encryptPassword(req.body.password);
-            req.body.password = encryptedPassword;
-        }
         const userUpdated = await User.update(req.body, {
             where: { id }
         });

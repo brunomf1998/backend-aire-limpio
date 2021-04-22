@@ -27,6 +27,23 @@ ctrl.getZones = async (req, res) => {
     }
 };
 
+ctrl.getZonesByDistrict = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const zones = await Zone.findAll({
+            where: {
+                districtId: id
+            }
+        });
+        res.status(200).json(zones);
+    } catch (error) {
+        res.status(500).json({
+            message:
+                error.message || 'Some error occurred while retrieving zones'
+        });
+    }
+};
+
 ctrl.getZoneById = async (req, res) => {
     try {
         const { id } = req.params;
