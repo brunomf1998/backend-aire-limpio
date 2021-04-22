@@ -47,39 +47,26 @@ ctrl.getMeasurementById = async (req, res) => {
 ctrl.getMeasurementsByZone = async (req, res) => {
     try {
         const { id } = req.params;
-        /* const measurements = await Measurement.findAll({
-            where: {
-                zoneId: id
-            },
-            attributes: ['id', 'zoneId', 'variableId', 'ecaValue']
-        }); */
-
         const measurements = await Measurement.findAll({
             where: {
                 zoneId: id
             },
             attributes: ['id', 'ecaValue'],
-            include: [
-                {
+            include: [{
                     model: Variable,
-                },
-                {
+                }, {
                     model: Zone,
-                }
-              ]
+            }]
         });
-        let measurementsModified = []
-        measurements.forEach(element => {
-            const aux = {
-                id: element.id,
-                ecaValue: element.ecaValue,
-                nombreZona: element.zone.name,
-                nombreVariable: element.variable.name
-            }
-            measurementsModified.push(aux);
+        const measurementsByZone = measurements.map(obj => {
+            const rObj = {};
+            rObj.id = obj.id;
+            rObj.ecaValue = obj.ecaValue;
+            rObj.nombreZona = obj.zone.name;
+            rObj.nombreVariable = obj.variable.name;
+            return rObj;
         });
-
-        res.status(200).json(measurementsModified);
+        res.status(200).json(measurementsByZone);
     } catch (error) {
         res.status(500).json({
             message:
