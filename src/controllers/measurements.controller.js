@@ -17,7 +17,9 @@ ctrl.createMeasurement = async (req, res) => {
 
 ctrl.getMeasurements = async (req, res) => {
     try {
-        const measurements = await Measurement.findAll();
+        const measurements = await Measurement.findAll({
+            attributes: ['id', 'zoneId', 'variableId', 'ecaValue']
+        });
         res.status(200).json(measurements);
     } catch (error) {
         res.status(500).json({
@@ -30,7 +32,9 @@ ctrl.getMeasurements = async (req, res) => {
 ctrl.getMeasurementById = async (req, res) => {
     try {
         const { id } = req.params;
-        const measurement = await Measurement.findByPk(id);
+        const measurement = await Measurement.findByPk(id, {
+            attributes: ['id', 'zoneId', 'variableId', 'ecaValue']
+        });
         res.status(200).json(measurement);
     } catch (error) {
         res.status(500).json({
@@ -46,7 +50,8 @@ ctrl.getMeasurementsByZone = async (req, res) => {
         const measurements = await Measurement.findAll({
             where: {
                 zoneId: id
-            }
+            },
+            attributes: ['id', 'zoneId', 'variableId', 'ecaValue']
         });
         res.status(200).json(measurements);
     } catch (error) {

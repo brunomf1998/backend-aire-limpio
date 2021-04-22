@@ -20,7 +20,8 @@ ctrl.createUser = async (req, res) => {
 
 ctrl.getUsers = async (req, res) => {
     try {
-        const users = await User.findAll();
+        const users = await User.findAll({ attributes: ['id', 'firstName', 'lastName', 'password', 'email', 'districtId'] });
+
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({
@@ -33,7 +34,7 @@ ctrl.getUsers = async (req, res) => {
 ctrl.getUserById = async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await User.findByPk(id);
+        const user = await User.findByPk(id, { attributes: ['id', 'firstName', 'lastName', 'password', 'email', 'districtId'] });
         res.status(200).json(user);
     } catch (error) {
         res.status(500).json({
@@ -47,7 +48,8 @@ ctrl.getUserByEmail = async (req, res) => {
     try {
         const { email } = req.params;
         const user = await User.findOne({
-            where: { email }
+            where: { email },
+            attributes: ['id', 'firstName', 'lastName', 'password', 'email', 'districtId']
         });
         res.status(200).json(user);
     } catch (error) {
